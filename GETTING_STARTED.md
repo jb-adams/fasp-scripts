@@ -32,7 +32,8 @@ git clone https://github.com/ga4gh/fasp-scripts.git
 cd fasp-scripts
 ```
 
-Let's create and activiate a virtual environment for `fasp-scripts` to avoid dependency conflicts with other projects.
+<a id="virtualenv"></a>
+Let's create and activate a virtual environment for `fasp-scripts` to avoid dependency conflicts with other projects.
 ```
 virtualenv env
 source env/bin/activate
@@ -57,6 +58,8 @@ know where the setting files is located:
 ```
 export FASP_SETTINGS="${HOME}/FASPSettings.json"
 ```
+
+**NOTE**: consider putting the above command into a terminal startup file, like `.bashrc` or `.bash_profile`, so that `FASP_SETTINGS` is automatically set when starting the command line.
 
 We created our own FASP settings file outside the repository so we can modify
 the behavior of certain scripts by changing the parameters. In most cases, the default parameters are enough to get started, however the value of `PipelineLog`
@@ -105,11 +108,14 @@ gcloud config set project fasp-scripts
 The scripts require the user, acting as a researcher, to have API access
 to web services owned by a number of real-world, genomic data sharing institutes.
 These institutions include:
+* DNAstack
 * BioDataCatalyst
-* Cancer Research Data Commons
+* Cancer Research Data Commons (CRDC)
 * AnVIL
 * Seven Bridges Cancer Genomics Cloud (CGC) 
 * Seven Bridges Cavatica
+
+**NOTE**: Remember that the `fasp-scripts` sometimes involve making resource-intensive requests, such as large search queries or compute, to production web services. You may incur a charge to your account from requests made while running the scripts.
 
 Before we register or get our API keys with any of the above platforms, let's 
 set up our local directory to hold these keys in the place that the
@@ -125,4 +131,51 @@ mkdir $HOME/.keys
 We will place our API key files under this directory. Now, we need to register
 accounts with the data platforms. Let's start with BioDataCatalyst.
 
+### Register with DNAstack
+
 ### Register with BioDataCatalyst
+
+### Register with the Cancer Research Data Commons (CRDC)
+
+### Register with AnVIL
+
+### Register with Seven Bridges Cancer Genomics Cloud (CGC)
+
+### Register with Seven Bridges Cavatica
+
+## Running Jupyter Notebooks
+
+### Jupyter Notebook Server Setup
+
+`fasp-scripts` uses Jupyter Notebooks for its rich formatting and interactive approach to scripting using Python. This guide will not go into all the features of Jupyter, but will only focus on how to get the `fasp-scripts` running in the Jupyter environment. To learn more about Jupyter Notebooks, read tutorials (such as this one provided by [Real Python](https://realpython.com/jupyter-notebook-introduction/)) or any others.
+
+From the `fasp-scripts` directory, enter the `notebooks` sub-folder and start the notebook server:
+```
+cd notebooks
+jupyter notebook
+```
+
+**NOTE**: Jupyter Notebook must be started while the [virtual environment](#virtualenv) we set up earlier is active.
+
+This will start a local server from which you can browse, run, and edit the `fasp-scripts` notebooks. On a web browser, navigate to `http://localhost:8888/tree`, you should see a listing of the available notebooks, like this:
+
+![notebook listing](./img/getting_started_jupyter_001.png)
+
+From here, we can click on any of the listed notebooks to run them in an interactive environment, visualizing the output produced by each chunk of code, or "cell." Let's take a closer look at `FASPNotebook06.ipynb`, and try to run it! Let's click on the notebook name to view the code.
+
+### Running our first Jupyter Notebook
+
+At a high level, `FASPNotebook06` first makes a request to DNAstack's implementation of the Search API, querying DRS IDs from a subset of thousand genomes data. For each record we obtain in the query results, we submit a workflow run to the DNAstack Workflow Execution Service (WES), using the DRS ID as input.
+
+## Closing up
+
+Once we're finished running the FASP notebooks, we can stop the Jupyter Notebook server from the command line by entering `Ctrl-C` twice.
+
+To deactivate the virtual environment, issue `deactivate` from the command line.
+
+The next time we want to run some notebooks, we just need to navigate to the `fasp-scripts` repo, start our virtual environment, and start the Jupyter Notebook server!
+```
+source env/bin/activate
+cd notebooks
+jupyter notebook
+```
